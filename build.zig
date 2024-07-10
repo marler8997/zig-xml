@@ -1,9 +1,17 @@
 const std = @import("std");
-const deps = @import("./deps.zig");
 
 pub fn build(b: *std.Build) void {
     const target = b.standardTargetOptions(.{});
     const mode = b.option(std.builtin.Mode, "mode", "") orelse .Debug;
+
+    const tracer_dep = b.dependency("zig_tracer", .{});
+    const tracer_mod = tracer_dep.module("tracer");
+    const xml_mod = b.addModule("zig-xml", .{
+        .root_source_file = b.path("mod.zig"),
+        .imports = &.{
+            .{ .name = "tracer", .module = tracer_mod },
+        },
+    });
 
     {
         const exe = b.addExecutable(.{
@@ -12,7 +20,7 @@ pub fn build(b: *std.Build) void {
             .target = target,
             .optimize = mode,
         });
-        deps.addAllTo(exe);
+        exe.root_module.addImport("xml", xml_mod);
         exe.linkLibC();
 
         const run_exe = b.addRunArtifact(exe);
@@ -29,7 +37,7 @@ pub fn build(b: *std.Build) void {
         .target = target,
         .optimize = mode,
     });
-    deps.addAllTo(unit_tests);
+    unit_tests.root_module.addImport("xml", xml_mod);
 
     const run_unit_tests = b.addRunArtifact(unit_tests);
 

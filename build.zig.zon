@@ -1,0 +1,22 @@
+.{
+    .name = "zig-xml",
+    .version = "0.0.0",
+    .dependencies = .{
+        .zig_tracer = .{
+            .url = "https://github.com/marler8997/zig-tracer/archive/00728068a0c1da05e64205d5d8df5f1ac00764ff.tar.gz",
+            .hash = "122066d588cfe17545124e8a362916e57f357fc558754a20749c4c1383fe2cb9feed",
+        },
+    },
+    .paths = .{
+        "build.zig",
+        "build.zig.zon",
+        "LICENSE",
+        "licenses.txt",
+        "main.zig",
+        "mod.zig",
+        "Parser.zig",
+        "README.md",
+        "test.zig",
+        "xml-test-suite",
+    },
+}
